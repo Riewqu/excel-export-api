@@ -9,10 +9,16 @@ const port = 3001;
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY);
 
 app.get('/export-orders-template', async (req, res) => {
+  const userId = req.query.user_id;
+
+  if (!userId) {
+    return res.status(400).send('Missing user_id');
+  }
+
   const [{ data: platforms }, { data: creators }, { data: products }] = await Promise.all([
-    supabase.from('platforms').select('name'),
-    supabase.from('creators').select('name'),
-    supabase.from('products').select('name')
+    supabase.from('platforms').select('name').eq('user_id', userId),
+    supabase.from('creators').select('name').eq('user_id', userId),
+    supabase.from('products').select('name').eq('user_id', userId)
   ]);
 
   const wb = new ExcelJS.Workbook();
