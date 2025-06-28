@@ -21,6 +21,10 @@ app.get('/export-orders-template', async (req, res) => {
     supabase.from('products').select('name').eq('user_id', userId)
   ]);
 
+  console.log("👉 platforms:", platforms, "error:", pe);
+console.log("👉 creators:", creators, "error:", ce);
+console.log("👉 products:", products, "error:", pe2);
+
   const wb = new ExcelJS.Workbook();
   const ws = wb.addWorksheet('Orders');
 
