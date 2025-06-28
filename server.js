@@ -40,16 +40,18 @@ app.get('/export-orders-template', async (req, res) => {
   ]);
 
   const addDropdown = (ws, col, values) => {
+    const escaped = values.map(v => `"${v.replace(/"/g, '""')}"`); // Escape " เป็น ""
     const validation = {
       type: 'list',
       allowBlank: true,
-      formulae: [`"${values.join(',')}"`],
+      formulae: [escaped.join(',')],
       showErrorMessage: true
     };
     for (let row = 2; row <= 100; row++) {
       ws.getCell(`${col}${row}`).dataValidation = validation;
     }
   };
+  
 
   addDropdown(ws, 'C', platforms.map(p => p.name)); // Platform
   addDropdown(ws, 'D', creators.map(c => c.name));  // Creator
