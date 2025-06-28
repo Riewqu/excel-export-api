@@ -15,15 +15,20 @@ app.get('/export-orders-template', async (req, res) => {
     return res.status(400).send('Missing user_id');
   }
 
-  const [{ data: platforms }, { data: creators }, { data: products }] = await Promise.all([
+  const [
+    { data: platforms, error: platformsError },
+    { data: creators, error: creatorsError },
+    { data: products, error: productsError }
+  ] = await Promise.all([
     supabase.from('platforms').select('name').eq('user_id', userId),
     supabase.from('creators').select('name').eq('user_id', userId),
-    supabase.from('products').select('name').eq('user_id', userId)
+    supabase.from('products').select('name').eq('user_id', userId),
   ]);
-
-  console.log("👉 platforms:", platforms, "error:", pe);
-console.log("👉 creators:", creators, "error:", ce);
-console.log("👉 products:", products, "error:", pe2);
+  
+  console.log("🟡 user_id:", userId);
+  console.log("📦 platforms:", platforms, "error:", platformsError);
+  console.log("🎨 creators:", creators, "error:", creatorsError);
+  console.log("🛒 products:", products, "error:", productsError);
 
   const wb = new ExcelJS.Workbook();
   const ws = wb.addWorksheet('Orders');
