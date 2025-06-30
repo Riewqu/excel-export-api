@@ -46,19 +46,19 @@ app.get('/export-orders-template', async (req, res) => {
   for (let row = 2; row <= 100; row++) {
     // Dropdown
     ordersSheet.getCell(`C${row}`).dataValidation = {
-      type: 'list', allowBlank: true, formulae: ['=Dictionary!A2:A100']
+      type: 'list', allowBlank: true, formulae: ['=Dictionary!$A$2:$A$100']
     };
     ordersSheet.getCell(`D${row}`).dataValidation = {
-      type: 'list', allowBlank: true, formulae: ['=Dictionary!B2:B100']
+      type: 'list', allowBlank: true, formulae: ['=Dictionary!$B$2:$B$100']
     };
     ordersSheet.getCell(`H${row}`).dataValidation = {
-      type: 'list', allowBlank: true, formulae: ['=Dictionary!C2:C100']
+      type: 'list', allowBlank: true, formulae: ['=Dictionary!$C$2:$C$100']
     };
     ordersSheet.getCell(`G${row}`).dataValidation = {
-      type: 'list', allowBlank: true, formulae: ['=Dictionary!D2:D100']
+      type: 'list', allowBlank: true, formulae: ['=Dictionary!$D$2:$D$100']
     };
     ordersSheet.getCell(`P${row}`).dataValidation = {
-      type: 'list', allowBlank: true, formulae: ['=Dictionary!E2:E100']
+      type: 'list', allowBlank: true, formulae: ['=Dictionary!$E$2:$E$100']
     };
 
     // หากมีชื่อสินค้า → เติม autofill ทันที (ถ้ามี default row)
