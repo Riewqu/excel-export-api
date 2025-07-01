@@ -60,16 +60,20 @@ app.get('/export-orders-template', async (req, res) => {
     ordersSheet.getCell(`P${row}`).dataValidation = {
       type: 'list', allowBlank: true, formulae: ['=Dictionary!$E$2:$E$100']
     };
-
-    // หากมีชื่อสินค้า → เติม autofill ทันที (ถ้ามี default row)
-    const product = products[row - 2];
-    if (product) {
-      ordersSheet.getCell(`H${row}`).value = product.name;
-      ordersSheet.getCell(`I${row}`).value = product.category;
-      ordersSheet.getCell(`J${row}`).value = product.sku;
-      ordersSheet.getCell(`L${row}`).value = product.costprice;
-      ordersSheet.getCell(`M${row}`).value = product.suggestedPrice;
-    }
+  
+    // ✅ ใส่ VLOOKUP ทุกแถว โดยไม่เช็ค product
+    ordersSheet.getCell(`I${row}`).value = {
+      formula: `=IFERROR(VLOOKUP(H${row}, ProductData!A:E, 2, FALSE), "")`
+    };
+    ordersSheet.getCell(`J${row}`).value = {
+      formula: `=IFERROR(VLOOKUP(H${row}, ProductData!A:E, 3, FALSE), "")`
+    };
+    ordersSheet.getCell(`L${row}`).value = {
+      formula: `=IFERROR(VLOOKUP(H${row}, ProductData!A:E, 4, FALSE), "")`
+    };
+    ordersSheet.getCell(`M${row}`).value = {
+      formula: `=IFERROR(VLOOKUP(H${row}, ProductData!A:E, 5, FALSE), "")`
+    };
   }
 
   // Sheet 2: Dictionary (สำหรับ dropdown)
